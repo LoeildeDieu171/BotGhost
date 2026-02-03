@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>BotGhost — Accueil</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="/Page-accueil/style.css">
+</head>
+
+<body>
+
+<!-- MODAL CONNEXION -->
+<div class="modal" id="loginModal">
+  <div class="modal-box">
+    <button class="close" id="closeModal">✕</button>
+
+    <div class="modal-icon">
+      <img src="https://cdn.discordapp.com/embed/avatars/0.png" width="36">
+    </div>
+
+    <h2>Connexion</h2>
+    <p>Connectez-vous avec Discord pour continuer</p>
+
+    <div class="session">
+      Session de 7 jours<br>
+      <small>Connexion automatique</small>
+    </div>
+
+    <button class="btn primary" id="discordLogin">
+      Continuer avec Discord
+    </button>
+
+    <div class="hint">
+      🔒 Connexion sécurisée via OAuth2
+    </div>
+  </div>
+</div>
+
+<!-- Effets -->
+<div class="glow g1"></div>
+<div class="glow g2"></div>
+<div class="glow g3"></div>
+<div class="grain"></div>
+
+<div class="wrap">
+
+  <!-- HEADER -->
+  <header>
+    <div class="brand">
+      <div class="mark">⌁</div>
+      <div class="name">Bot<span>Ghost</span></div>
+    </div>
+
+    <div class="avatar"></div>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+    <section class="hero">
+
+      <div class="pill">
+        <span class="dot"></span>
+        <span>Accès anticipé ouvert</span>
+      </div>
+
+      <h1>
+        Créez et gérez<br>
+        <span class="grad">vos bots Discord</span>
+      </h1>
+
+      <p class="sub">
+        BotGhost est une plateforme moderne pour créer, configurer
+        et gérer des bots Discord simplement et efficacement.
+      </p>
+
+      <div class="chips">
+        <div class="chip">🚀 Accès anticipé</div>
+        <div class="chip">💬 Communauté privée</div>
+        <div class="chip">🛡️ Sécurité avancée</div>
+      </div>
+
+      <!-- ACTIONS (SANS RECRUTEMENT) -->
+      <div class="hero-actions">
+        <button class="btn primary" id="commencer">
+          Commencer →
+        </button>
+      </div>
+
+      <div class="hero-discord">
+        <button class="btn discord">
+          💬 Rejoindre le Discord
+        </button>
+      </div>
+
+    </section>
+  </main>
+</div>
+
+<script src="/Page-accueil/app.js"></script>
+</body>
+</html>

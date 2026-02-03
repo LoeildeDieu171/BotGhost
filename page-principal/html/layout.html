@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<title>BotGhost – Dashboard</title>
+<link rel="stylesheet" href="../css/style.css" />
+<link rel="stylesheet" href="../css/layout.css" />
+<link rel="stylesheet" href="../css/dashboard.css" />
+</head>
+<body>
+
+
+<div class="app">
+
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+<div class="logo">BotGhost</div>
+
+
+<nav>
+<a href="accueil.html" class="active">🏠 Accueil</a>
+<a href="profil.html">👤 Mon Profil</a>
+<a href="candidatures.html">📄 Mes Candidatures</a>
+<a href="recrutement.html">🎧 Recrutement</a>
+</nav>
+
+
+<div class="bottom">
+<a href="/bug/bug.html" class="bug">🐛 Signaler un bug</a>
+<div class="user">
+<img src="/logo.png" />
+<span id="username">Utilisateur</span>
+</div>
+</div>
+</aside>
+
+
+<!-- CONTENT -->
+<main class="content">
+
+
+<header class="topbar">
+<div class="welcome">
+<img id="avatar" />
+<div>
+<h1>Bienvenue, <span id="pseudo">Utilisateur</span> 👋</h1>
+<p>Voici un aperçu de votre activité</p>
+</div>
+</div>
+</header>
+
+
+<section class="stats">
+<div class="stat">TOTAL<br><strong>0</strong><small>Candidatures</small></div>
+<div class="stat yellow">EN COURS<br><strong>0</strong><small>En attente</small></div>
+<div class="stat green">SUCCÈS<br><strong>0</strong><small>Acceptées</small></div>
+<div class="stat purple">DISPONIBLES<br><strong>3</strong><small>Postes ouverts</small></div>
+</section>
+
+
+<section class="grid">
+<div class="card large">
+<h3>📄 Candidatures récentes</h3>
+<p>Aucune candidature pour le moment</p>
+<button onclick="location.href='recrutement.html'">Voir les postes disponibles</button>
+</div>
+
+
+<div class="card">
+<h3>🚀 Postes disponibles</h3>
+<ul>
+<li>⚡ Alpha Testeur <span>15 places</span></li>
+<li>📣 Marketing <span>3 places</span></li>
+<li>🛟 Support <span>5 places</span></li>
+</ul>
+</div>
+</section>
+
+
+</main>
+</div>
+
+
+<script src="../js/dashboard.js"></script>
+</body>
+</html>

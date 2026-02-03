@@ -1,0 +1,158 @@
+/* ==================== PROFILE HEADER ==================== */
+.profile-header {
+  background: linear-gradient(135deg, #1a1a2e 0%, #121222 100%);
+  border: 1px solid #2a2a3e;
+  border-radius: 16px;
+  padding: 40px;
+  margin-bottom: 40px;
+  display: flex;
+  align-items: flex-end;
+  gap: 30px;
+}
+
+.profile-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-avatar {
+  width: 180px;
+  height: 180px;
+  border-radius: 16px;
+  border: 3px solid #7c5cff;
+  object-fit: cover;
+  box-shadow: 0 10px 40px rgba(124, 92, 255, 0.2);
+}
+
+.profile-info {
+  flex: 1;
+}
+
+.profile-info h1 {
+  font-size: 32px;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.profile-info p {
+  color: #888;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.profile-id {
+  color: #7c5cff !important;
+  font-weight: 600;
+}
+
+/* ==================== PROFILE CONTENT ==================== */
+.profile-content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.profile-section {
+  background: #121222;
+  border: 1px solid #1a1a2e;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.profile-section h3 {
+  font-size: 18px;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.profile-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.profile-item .label {
+  font-size: 13px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.profile-item .value {
+  font-size: 15px;
+  color: #eee;
+  font-weight: 500;
+}
+
+/* ==================== STATS GRID ==================== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.stat-card {
+  background: #1a1a2e;
+  border: 1px solid #2a2a3e;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.stat-card:hover {
+  background: #1f1f35;
+  border-color: #3a3a4e;
+  transform: translateY(-2px);
+}
+
+.stat-number {
+  font-size: 36px;
+  font-weight: 700;
+  color: #7c5cff;
+  margin-bottom: 8px;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #888;
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 1024px) {
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
+    padding: 30px;
+  }
+
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-avatar {
+    width: 120px;
+    height: 120px;
+  }
+
+  .profile-info h1 {
+    font-size: 24px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}

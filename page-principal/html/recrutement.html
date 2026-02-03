@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Recrutement • Dashboard</title>
+  <link rel="stylesheet" href="/page-principal/css/accueil.css">
+  <link rel="stylesheet" href="/page-principal/css/recrutement.css">
+  <script src="/page-principal/js/dashboard.js" defer></script>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div>
+      <div class="logo-section" onclick="navigateTo('accueil')" style="cursor: pointer;">
+        <img src="/logo.png" alt="Logo" class="sidebar-logo">
+      </div>
+
+      <nav class="menu">
+        <a class="item" onclick="navigateTo('accueil')">Accueil</a>
+        <a class="item" onclick="navigateTo('profil')">Mon Profil</a>
+        <a class="item" onclick="navigateTo('candidatures')">Mes Candidatures</a>
+        <a class="item active" onclick="navigateTo('recrutement')">Recrutement</a>
+      </nav>
+
+      <div id="adminSection" class="admin-section" style="display: none;">
+        <div class="admin-divider"></div>
+        <a class="item" onclick="navigateTo('admin')">Admin Panel</a>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <button class="bug-btn" onclick="location.href='/bug/bug.html'">
+        Signaler un bug
+      </button>
+
+      <button class="logout-btn" onclick="logout()">
+        Déconnexion
+      </button>
+
+      <div class="user" onclick="navigateTo('profil')" style="cursor: pointer;">
+        <img id="userAvatar" src="/logo.png" alt="avatar">
+        <div>
+          <strong id="userName">Utilisateur</strong><br>
+          <small>Membre</small>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- HEADER -->
+    <header class="header">
+      <div class="welcome">
+        <h2>Recrutement</h2>
+        <p>Découvrez nos postes disponibles</p>
+      </div>
+    </header>
+
+    <section class="content">
+
+      <!-- JOBS GRID -->
+      <div class="jobs-grid" id="jobsGrid">
+        <!-- Les postes seront chargés ici -->
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+<script>
+  // Navigation
+  function navigateTo(page) {
+    const pages = {
+      'accueil': '/page-principal/html/accueil.html',
+      'profil': '/page-principal/html/profil.html',
+      'candidatures': '/page-principal/html/candidatures.html',
+      'recrutement': '/page-principal/html/recrutement.html',
+      'admin': '/page-principal/html/admin.html'
+    };
+    if (pages[page]) {
+      window.location.href = pages[page];
+    }
+  }
+
+  // Déconnexion
+  function logout() {
+    fetch('/logout', { method: 'POST' })
+      .then(() => {
+        window.location.href = '/';
+      })
+      .catch(err => {
+        console.error('Erreur déconnexion:', err);
+        window.location.href = '/';
+      });
+  }
+
+  // Charger les infos utilisateur et postes
+  document.addEventListener('DOMContentLoaded', () => {
+    fetch('/api/user')
+      .then(res => res.json())
+      .then(data => {
+        if (data.user) {
+          document.getElementById('userName').textContent = data.user.username;
+          if (data.user.avatar) {
+            document.getElementById('userAvatar').src = data.user.avatar;
+          }
+
+          // Vérifier si admin
+          if (data.user.role === 'owner') {
+            document.getElementById('adminSection').style.display = 'block';
+          }
+
+          // Charger les postes depuis le serveur
+          loadJobs();
+        }
+      })
+      .catch(err => console.log('Erreur chargement:', err));
+  });
+
+  function loadJobs() {
+    fetch('/server/data/posts.json')
+      .then(res => res.json())
+      .then(posts => {
+        const jobs = posts.map(p => ({
+          id: p.id,
+          title: p.name,
+          icon: p.icon || '📌',
+          spots: p.places || 0,
+          description: p.description || ''
+        }));
+        displayJobs(jobs);
+      })
+      .catch(() => {
+        // fallback
+        displayJobs([]);
+      });
+  }
+
+  function displayJobs(jobs) {
+    const grid = document.getElementById('jobsGrid');
+    grid.innerHTML = jobs.map(job => `
+      <div class="job-card">
+        <div class="job-icon">${job.icon}</div>
+        <h3>${job.title}</h3>
+        <p class="job-desc">${job.description}</p>
+        <p class="job-spots">${job.spots} places restantes</p>
+        <button class="btn-apply" onclick="openApplyForm('${job.title}', '${job.id}')">Postuler →</button>
+      </div>
+    `).join('');
+  }
+
+  // --- Application form page ---
+  function openApplyForm(jobTitle, jobId) {
+    // Navigate to dedicated application form page
+    window.location.href = `/page-principal/html/application-form.html?jobId=${encodeURIComponent(jobId)}&jobTitle=${encodeURIComponent(jobTitle)}`;
+  }
+</script>
+
+</body>
+</html>

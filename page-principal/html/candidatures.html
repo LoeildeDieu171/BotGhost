@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Mes Candidatures • Dashboard</title>
+  <link rel="stylesheet" href="/page-principal/css/accueil.css">
+  <link rel="stylesheet" href="/page-principal/css/candidatures.css">
+  <script src="/page-principal/js/dashboard.js" defer></script>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div>
+      <div class="logo-section" onclick="navigateTo('accueil')" style="cursor: pointer;">
+        <img src="/logo.png" alt="Logo" class="sidebar-logo">
+      </div>
+
+      <nav class="menu">
+        <a class="item" onclick="navigateTo('accueil')">Accueil</a>
+        <a class="item" onclick="navigateTo('profil')">Mon Profil</a>
+        <a class="item active" onclick="navigateTo('candidatures')">Mes Candidatures</a>
+        <a class="item" onclick="navigateTo('recrutement')">Recrutement</a>
+      </nav>
+
+      <div id="adminSection" class="admin-section" style="display: none;">
+        <div class="admin-divider"></div>
+        <a class="item" onclick="navigateTo('admin')">Admin Panel</a>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <button class="bug-btn" onclick="location.href='/bug/bug.html'">
+        Signaler un bug
+      </button>
+
+      <button class="logout-btn" onclick="logout()">
+        Déconnexion
+      </button>
+
+      <div class="user" onclick="navigateTo('profil')" style="cursor: pointer;">
+        <img id="userAvatar" src="/logo.png" alt="avatar">
+        <div>
+          <strong id="userName">Utilisateur</strong><br>
+          <small>Membre</small>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- HEADER -->
+    <header class="header">
+      <div class="welcome">
+        <h2>Mes Candidatures</h2>
+        <p>Suivez l'état de vos candidatures</p>
+      </div>
+    </header>
+
+    <section class="content">
+
+      <!-- STATS -->
+      <div class="stats-candidatures">
+        <div class="stat-item">
+          <span>Total</span>
+          <strong id="statTotal">0</strong>
+        </div>
+        <div class="stat-item yellow">
+          <span>En cours</span>
+          <strong id="statPending">0</strong>
+        </div>
+        <div class="stat-item green">
+          <span>Acceptées</span>
+          <strong id="statAccepted">0</strong>
+        </div>
+        <div class="stat-item red">
+          <span>Refusées</span>
+          <strong id="statRefused">0</strong>
+        </div>
+      </div>
+
+      <!-- SEARCH BAR -->
+      <div class="search-bar">
+        <input type="text" placeholder="🔍 Rechercher un poste..." id="searchInput">
+      </div>
+
+      <!-- CANDIDATURES LIST -->
+      <div id="candidaturesList" class="candidatures-list">
+        <div class="empty-state">
+          <div class="empty-icon">📋</div>
+          <h3>Aucune candidature</h3>
+          <p>Vous n'avez pas encore postulé à un poste</p>
+          <button class="btn-discover" onclick="navigateTo('recrutement')">Découvrir les postes →</button>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+<script>
+  // Navigation
+  function navigateTo(page) {
+    const pages = {
+      'accueil': '/page-principal/html/accueil.html',
+      'profil': '/page-principal/html/profil.html',
+      'candidatures': '/page-principal/html/candidatures.html',
+      'recrutement': '/page-principal/html/recrutement.html',
+      'admin': '/page-principal/html/admin.html'
+    };
+    if (pages[page]) {
+      window.location.href = pages[page];
+    }
+  }
+
+  // Déconnexion
+  function logout() {
+    fetch('/logout', { method: 'POST' })
+      .then(() => {
+        window.location.href = '/';
+      })
+      .catch(err => {
+        console.error('Erreur déconnexion:', err);
+        window.location.href = '/';
+      });
+  }
+
+  // Charger les infos utilisateur et candidatures
+  document.addEventListener('DOMContentLoaded', () => {
+    fetch('/api/user')
+      .then(res => res.json())
+      .then(data => {
+        if (data.user) {
+          document.getElementById('userName').textContent = data.user.username;
+          if (data.user.avatar) {
+            document.getElementById('userAvatar').src = data.user.avatar;
+          }
+
+          // Vérifier si admin
+          if (data.user.role === 'owner') {
+            document.getElementById('adminSection').style.display = 'block';
+          }
+
+          // Charger les candidatures
+          loadCandidatures();
+        }
+      })
+      .catch(err => console.log('Erreur chargement:', err));
+  });
+
+  function loadCandidatures() {
+    fetch('/api/candidatures')
+      .then(res => res.json())
+      .then(data => {
+        if (data.candidatures && data.candidatures.length > 0) {
+          displayCandidatures(data.candidatures);
+          updateStats(data.candidatures);
+        }
+      })
+      .catch(err => console.log('Erreur candidatures:', err));
+  }
+
+  function displayCandidatures(candidatures) {
+    const list = document.getElementById('candidaturesList');
+    list.innerHTML = candidatures.map(cand => `
+      <div class="candidature-card status-${cand.status}">
+        <div class="cand-header">
+          <h3>${cand.jobTitle}</h3>
+          <span class="status-badge status-${cand.status}">${cand.statusLabel}</span>
+        </div>
+        <div class="cand-info">
+          <p><strong>Date:</strong> ${new Date(cand.date).toLocaleDateString('fr-FR')}</p>
+          <p><strong>Statut:</strong> ${cand.statusLabel}</p>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function updateStats(candidatures) {
+    const total = candidatures.length;
+    const pending = candidatures.filter(c => c.status === 'pending').length;
+    const accepted = candidatures.filter(c => c.status === 'accepted').length;
+    const refused = candidatures.filter(c => c.status === 'refused').length;
+
+    document.getElementById('statTotal').textContent = total;
+    document.getElementById('statPending').textContent = pending;
+    document.getElementById('statAccepted').textContent = accepted;
+    document.getElementById('statRefused').textContent = refused;
+  }
+
+  // Search
+  document.getElementById('searchInput').addEventListener('input', (e) => {
+    const search = e.target.value.toLowerCase();
+    const cards = document.querySelectorAll('.candidature-card');
+    cards.forEach(card => {
+      card.style.display = card.textContent.toLowerCase().includes(search) ? 'block' : 'none';
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>BotGhost • Dashboard</title>
+  <link rel="stylesheet" href="/page-principal/css/accueil.css">
+  <script src="/page-principal/js/dashboard.js" defer></script>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div>
+      <div class="logo-section" onclick="navigateTo('accueil')" style="cursor: pointer;">
+        <img src="/logo.png" alt="Logo" class="sidebar-logo">
+      </div>
+
+      <nav class="menu">
+        <a class="item active" onclick="navigateTo('accueil')">Accueil</a>
+        <a class="item" onclick="navigateTo('profil')">Mon Profil</a>
+        <a class="item" onclick="navigateTo('candidatures')">Mes Candidatures</a>
+        <a class="item" onclick="navigateTo('recrutement')">Recrutement</a>
+      </nav>
+
+      <div id="adminSection" class="admin-section" style="display: none;">
+        <div class="admin-divider"></div>
+        <a class="item" onclick="navigateTo('admin')">Admin Panel</a>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <button class="bug-btn" onclick="location.href='/bug/bug.html'">
+        Signaler un bug
+      </button>
+
+      <button class="logout-btn" onclick="logout()">
+        Déconnexion
+      </button>
+
+      <div class="user" onclick="navigateTo('profil')" style="cursor: pointer;">
+        <img id="userAvatar" src="/logo.png" alt="avatar">
+        <div>
+          <strong id="userName">Utilisateur</strong><br>
+          <small>Membre</small>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- HEADER -->
+    <header class="header">
+      <div class="welcome">
+        <div>
+          <h2>Bienvenue, <span id="userDisplayName">naya987549825</span> 👋</h2>
+          <p>Voici un aperçu de votre activité</p>
+        </div>
+      </div>
+    </header>
+
+    <section class="content">
+
+      <!-- STATS -->
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-icon">📋</div>
+          <span>TOTAL</span>
+          <strong>0</strong>
+          <small>Candidatures</small>
+        </div>
+
+        <div class="stat yellow">
+          <div class="stat-icon">👤</div>
+          <span>EN COURS</span>
+          <strong>0</strong>
+          <small>En attente</small>
+        </div>
+
+        <div class="stat green">
+          <div class="stat-icon">✅</div>
+          <span>SUCCÈS</span>
+          <strong>0</strong>
+          <small>Acceptées</small>
+        </div>
+
+        <div class="stat purple">
+          <div class="stat-icon">📂</div>
+          <span>DISPONIBLES</span>
+          <strong>3</strong>
+          <small>Postes ouverts</small>
+        </div>
+      </div>
+
+      <!-- GRID -->
+      <div class="grid">
+
+        <!-- CANDIDATURES RÉCENTES -->
+        <div class="box large" onclick="navigateTo('candidatures')" style="cursor: pointer;">
+          <div class="box-header">
+            <h3>📄 Candidatures récentes</h3>
+            <a href="#" onclick="event.stopPropagation()">Voir tout →</a>
+          </div>
+
+          <div class="empty">
+            <div class="empty-icon">📄</div>
+            <p>Aucune candidature pour le moment</p>
+            <button class="view-jobs-btn" onclick="event.stopPropagation(); navigateTo('recrutement')">Voir les postes disponibles</button>
+          </div>
+        </div>
+
+        <!-- POSTES DISPONIBLES -->
+        <div class="box">
+          <div class="box-header">
+            <h3>🚀 Postes disponibles</h3>
+            <a href="#">Explorer →</a>
+          </div>
+
+          <ul class="jobs">
+            <li onclick="applyJob('Alpha Testeur')" style="cursor: pointer;">
+              <div class="job-info">
+                <span class="job-icon">⚡</span>
+                <div>
+                  <strong>Alpha Testeur</strong>
+                  <small>15 places restantes</small>
+                </div>
+              </div>
+              <a class="job-action" onclick="event.stopPropagation()">Postuler →</a>
+            </li>
+            <li onclick="applyJob('Marketing')" style="cursor: pointer;">
+              <div class="job-info">
+                <span class="job-icon">📣</span>
+                <div>
+                  <strong>Marketing</strong>
+                  <small>3 places restantes</small>
+                </div>
+              </div>
+              <a class="job-action" onclick="event.stopPropagation()">Postuler →</a>
+            </li>
+            <li onclick="applyJob('Support')" style="cursor: pointer;">
+              <div class="job-info">
+                <span class="job-icon">🛟</span>
+                <div>
+                  <strong>Support</strong>
+                  <small>5 places restantes</small>
+                </div>
+              </div>
+              <a class="job-action" onclick="event.stopPropagation()">Postuler →</a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- ACTIONS RAPIDES -->
+      <div class="section-title">Actions rapides</div>
+      <div class="actions">
+        <div class="action" onclick="navigateTo('profil')" style="cursor: pointer;">
+          <div class="action-icon">👤</div>
+          <h4>Mon Profil</h4>
+          <p>Voir mes informations</p>
+        </div>
+        <div class="action" onclick="navigateTo('candidatures')" style="cursor: pointer;">
+          <div class="action-icon">📋</div>
+          <h4>Mes Candidatures</h4>
+          <p>Suivre mes demandes</p>
+        </div>
+        <div class="action" onclick="navigateTo('recrutement')" style="cursor: pointer;">
+          <div class="action-icon">📂</div>
+          <h4>Recrutement</h4>
+          <p>Découvrir les postes</p>
+        </div>
+      </div>
+
+      <!-- NOS RÉSEAUX -->
+      <div class="networks-section">
+        <div class="section-title">Nos Réseaux</div>
+        <a href="https://discord.gg/cbJzEHAWXn" target="_blank" class="network-item">
+          <div class="network-icon">💬</div>
+          <div>
+            <h4>Discord</h4>
+            <p>Rejoindre le serveur</p>
+          </div>
+          <span class="network-link">↗</span>
+        </a>
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+<script>
+  // Navigation
+  function navigateTo(page) {
+    const pages = {
+      'accueil': '/page-principal/html/accueil.html',
+      'profil': '/page-principal/html/profil.html',
+      'candidatures': '/page-principal/html/candidatures.html',
+      'recrutement': '/page-principal/html/recrutement.html',
+      'admin': '/page-principal/html/admin.html'
+    };
+    if (pages[page]) {
+      window.location.href = pages[page];
+    }
+  }
+
+  // Déconnexion
+  function logout() {
+    fetch('/logout', { method: 'POST' })
+      .then(() => {
+        window.location.href = '/';
+      })
+      .catch(err => {
+        console.error('Erreur déconnexion:', err);
+        window.location.href = '/';
+      });
+  }
+
+  // Postuler à un poste
+  function applyJob(jobTitle) {
+    fetch('/api/apply', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ job: jobTitle })
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          alert('Candidature envoyée avec succès!');
+          navigateTo('candidatures');
+        } else {
+          alert('Erreur: ' + (data.message || 'Impossible de postuler'));
+        }
+      })
+      .catch(err => {
+        console.error('Erreur candidature:', err);
+        alert('Erreur lors de l\'envoi de votre candidature');
+      });
+  }
+
+  // Charger les infos utilisateur depuis la session
+  document.addEventListener('DOMContentLoaded', () => {
+    fetch('/api/user')
+      .then(res => res.json())
+      .then(data => {
+        if (data.user) {
+          document.getElementById('userName').textContent = data.user.username;
+          document.getElementById('userDisplayName').textContent = data.user.username;
+          if (data.user.avatar) {
+            document.getElementById('userAvatar').src = data.user.avatar;
+          }
+
+          // Vérifier si admin
+          if (data.user.role === 'owner') {
+            document.getElementById('adminSection').style.display = 'block';
+          }
+        }
+      })
+      .catch(err => console.log('Session info non disponible'));
+  });
+</script>
+
+</body>
+</html>

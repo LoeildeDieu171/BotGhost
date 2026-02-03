@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Postuler • Dashboard</title>
+  <link rel="stylesheet" href="/page-principal/css/accueil.css">
+  <style>
+    /* Dark theme matching admin */
+    body {
+      background: #0a0e27;
+      color: #ddd;
+    }
+
+    .form-container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: #121222;
+      padding: 30px;
+      border-radius: 10px;
+      border: 1px solid #1a1a2e;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .job-details {
+      background: rgba(124, 92, 255, 0.1);
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+      border: 1px solid #7c5cff;
+      border-left: 4px solid #7c5cff;
+    }
+
+    .job-details h3 {
+      margin: 0 0 10px 0;
+      color: #7c5cff;
+    }
+
+    .job-details p {
+      margin: 5px 0;
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #ddd;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #1a1a2e;
+      background: #0a0e27;
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: inherit;
+      box-sizing: border-box;
+      color: #ddd;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #7c5cff;
+      box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.1);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .form-actions button {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+
+    .form-actions button.primary {
+      background: #7c5cff;
+      color: white;
+    }
+
+    .form-actions button.primary:hover {
+      background: #6344d9;
+      box-shadow: 0 4px 12px rgba(124, 92, 255, 0.3);
+    }
+
+    .form-actions button.secondary {
+      background: rgba(124, 92, 255, 0.1);
+      color: #7c5cff;
+      border: 1px solid #7c5cff;
+    }
+
+    .form-actions button.secondary:hover {
+      background: rgba(124, 92, 255, 0.2);
+    }
+
+    .error-message {
+      background: rgba(231, 76, 60, 0.15);
+      color: #e74c3c;
+      padding: 12px 16px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      display: none;
+      border: 1px solid rgba(231, 76, 60, 0.3);
+    }
+
+    .success-message {
+      background: rgba(46, 204, 113, 0.15);
+      color: #2ecc71;
+      padding: 12px 16px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      display: none;
+      border: 1px solid rgba(46, 204, 113, 0.3);
+    }
+  </style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div>
+      <div class="logo-section" onclick="navigateTo('accueil')" style="cursor: pointer;">
+        <img src="/logo.png" alt="Logo" class="sidebar-logo">
+      </div>
+
+      <nav class="menu">
+        <a class="item" onclick="navigateTo('accueil')">Accueil</a>
+        <a class="item" onclick="navigateTo('profil')">Mon Profil</a>
+        <a class="item" onclick="navigateTo('candidatures')">Mes Candidatures</a>
+        <a class="item" onclick="navigateTo('recrutement')">Recrutement</a>
+      </nav>
+
+      <div id="adminSection" class="admin-section" style="display: none;">
+        <div class="admin-divider"></div>
+        <a class="item" onclick="navigateTo('admin')">Admin Panel</a>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <button class="bug-btn" onclick="location.href='/bug/bug.html'">
+        Signaler un bug
+      </button>
+
+      <button class="logout-btn" onclick="logout()">
+        Déconnexion
+      </button>
+
+      <div class="user" onclick="navigateTo('profil')" style="cursor: pointer;">
+        <img id="userAvatar" src="/logo.png" alt="avatar">
+        <div>
+          <strong id="userName">Utilisateur</strong><br>
+          <small>Membre</small>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- HEADER -->
+    <header class="header">
+      <div class="welcome">
+        <h2>Postuler pour un poste</h2>
+        <p>Remplissez le formulaire pour nous rejoindre</p>
+      </div>
+    </header>
+
+    <section class="content">
+
+      <div class="form-container">
+        
+        <div id="errorMessage" class="error-message"></div>
+        <div id="successMessage" class="success-message"></div>
+
+        <div id="jobDetails" class="job-details" style="display: none;">
+          <h3 id="jobTitle">Poste</h3>
+          <p id="jobDescription">Description du poste</p>
+          <p>Places disponibles: <strong id="jobPlaces">0</strong></p>
+        </div>
+
+        <form id="applicationForm">
+          <div class="form-group">
+            <label for="age">Âge *</label>
+            <input type="number" id="age" name="age" required>
+          </div>
+
+          <div class="form-group">
+            <label for="experience">Expérience (années) *</label>
+            <input type="number" id="experience" name="experience" required>
+          </div>
+
+          <div class="form-group">
+            <label for="availability">Disponibilités *</label>
+            <input type="text" id="availability" name="availability" placeholder="Ex: Soirées, Week-ends" required>
+          </div>
+
+          <div class="form-group">
+            <label for="extra">Motivation / Remarques</label>
+            <textarea id="extra" name="extra" placeholder="Dites-nous pourquoi vous êtes intéressé..."></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="secondary" onclick="goBack()">Annuler</button>
+            <button type="submit" class="primary">Envoyer la candidature</button>
+          </div>
+        </form>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+<script>
+  let currentJobId = null;
+  let currentJobTitle = null;
+
+  // Navigation
+  function navigateTo(page) {
+    const pages = {
+      'accueil': '/page-principal/html/accueil.html',
+      'profil': '/page-principal/html/profil.html',
+      'candidatures': '/page-principal/html/candidatures.html',
+      'recrutement': '/page-principal/html/recrutement.html',
+      'admin': '/page-principal/html/admin.html'
+    };
+    if (pages[page]) {
+      window.location.href = pages[page];
+    }
+  }
+
+  function goBack() {
+    window.location.href = '/page-principal/html/recrutement.html';
+  }
+
+  // Déconnexion
+  function logout() {
+    fetch('/logout', { method: 'POST' })
+      .then(() => {
+        window.location.href = '/';
+      })
+      .catch(err => {
+        console.error('Erreur déconnexion:', err);
+        window.location.href = '/';
+      });
+  }
+
+  // Load page
+  document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    const jobId = params.get('jobId');
+    const jobTitle = params.get('jobTitle');
+
+    if (!jobId || !jobTitle) {
+      showError('Pas de poste sélectionné');
+      return;
+    }
+
+    currentJobId = jobId;
+    currentJobTitle = jobTitle;
+
+    // Load user info
+    fetch('/api/user')
+      .then(res => res.json())
+      .then(data => {
+        if (data.user) {
+          document.getElementById('userName').textContent = data.user.username;
+          if (data.user.avatar) {
+            document.getElementById('userAvatar').src = data.user.avatar;
+          }
+
+          if (data.user.role === 'owner') {
+            document.getElementById('adminSection').style.display = 'block';
+          }
+
+          // Load job details
+          loadJobDetails(jobId, jobTitle);
+        }
+      })
+      .catch(err => console.log('Erreur chargement:', err));
+  });
+
+  function loadJobDetails(jobId, jobTitle) {
+    fetch('/server/data/posts.json')
+      .then(res => res.json())
+      .then(posts => {
+        const job = posts.find(p => p.id === jobId);
+        if (job) {
+          document.getElementById('jobTitle').textContent = job.name;
+          document.getElementById('jobDescription').textContent = job.description || 'Rejoignez notre équipe';
+          document.getElementById('jobPlaces').textContent = job.places;
+          document.getElementById('jobDetails').style.display = 'block';
+        }
+      })
+      .catch(err => console.log('Erreur chargement job:', err));
+  }
+
+  // Form submit
+  document.getElementById('applicationForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const payload = {
+      jobTitle: currentJobTitle,
+      jobId: currentJobId,
+      age: document.getElementById('age').value,
+      experience: document.getElementById('experience').value,
+      availability: document.getElementById('availability').value,
+      extra: document.getElementById('extra').value
+    };
+
+    fetch('/api/apply', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          showSuccess('Candidature envoyée avec succès! Redirection en cours...');
+          setTimeout(() => {
+            window.location.href = '/page-principal/html/candidatures.html';
+          }, 2000);
+        } else {
+          showError('Erreur: ' + (data.message || 'Impossible de postuler'));
+        }
+      })
+      .catch(err => {
+        console.error('Erreur:', err);
+        showError('Erreur lors de l\'envoi de votre candidature');
+      });
+  });
+
+  function showError(msg) {
+    const el = document.getElementById('errorMessage');
+    el.textContent = msg;
+    el.style.display = 'block';
+  }
+
+  function showSuccess(msg) {
+    const el = document.getElementById('successMessage');
+    el.textContent = msg;
+    el.style.display = 'block';
+  }
+</script>
+
+</body>
+</html>

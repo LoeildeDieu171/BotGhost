@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Signaler un bug</title>
+  <link rel="stylesheet" href="bug.css">
+</head>
+<body>
+
+<div class="modal-overlay active">
+  <div class="modal">
+    <!-- Modal Header -->
+    <div class="modal-header">
+      <div class="modal-title-section">
+        <span class="bug-icon">🐞</span>
+        <div>
+          <h2>Signaler un bug</h2>
+          <p>Aidez-nous à améliorer le site</p>
+        </div>
+      </div>
+      <button class="close-btn" onclick="closeBugReport()">&times;</button>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="modal-body">
+      <form id="bugForm" onsubmit="submitBug(event)">
+        
+        <!-- Nouveau rapport -->
+        <div class="form-section">
+          <h3>📋 Nouveau rapport</h3>
+          
+          <!-- Titre du bug -->
+          <div class="form-group">
+            <label>Titre du bug <span class="required">*</span></label>
+            <input 
+              type="text" 
+              name="title"
+              placeholder="Ex: Le bouton de connexion ne fonctionne pas" 
+              required
+            >
+          </div>
+
+          <!-- Description -->
+          <div class="form-group">
+            <label>Description détaillée <span class="required">*</span></label>
+            <textarea 
+              name="description"
+              placeholder="Décrivez le bug en détail : ce que vous faisiez, ce qui s'est passé, ce que vous attendiez..." 
+              required
+              minlength="20"
+            ></textarea>
+            <small>Minimum 20 caractères</small>
+          </div>
+
+          <!-- Page concernée -->
+          <div class="form-group">
+            <label>Page concernée</label>
+            <input 
+              type="text" 
+              name="page"
+              placeholder="/dashboard/bug" 
+              value="/page-principal"
+            >
+          </div>
+
+          <!-- Priorité -->
+          <div class="form-group">
+            <label>Priorité estimée</label>
+            <div class="priority-options">
+              <label class="priority-option">
+                <input type="radio" name="priority" value="Faible">
+                <div class="priority-label">
+                  <strong>Faible</strong>
+                  <small>Problème mineur, n'affecte pas l'utilisation</small>
+                </div>
+              </label>
+              <label class="priority-option active">
+                <input type="radio" name="priority" value="Moyen" checked>
+                <div class="priority-label">
+                  <strong>Moyen</strong>
+                  <small>Problème gênant mais confortable</small>
+                </div>
+              </label>
+              <label class="priority-option">
+                <input type="radio" name="priority" value="Élevé">
+                <div class="priority-label">
+                  <strong>Élevé</strong>
+                  <small>Problème bloquant certaines fonctionnalités</small>
+                </div>
+              </label>
+              <label class="priority-option">
+                <input type="radio" name="priority" value="Critique">
+                <div class="priority-label">
+                  <strong>Critique</strong>
+                  <small>Site inutilisable ou données perdues</small>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Conseils -->
+        <div class="tips-section">
+          <div class="tips-icon">ℹ️</div>
+          <div>
+            <h4>Conseils pour un bon rapport</h4>
+            <ul>
+              <li>Décrivez les étapes pour reproduire le bug</li>
+              <li>Indiquez ce que vous attendiez vs ce qui s'est passé</li>
+              <li>Mentionnez si le bug est reproductible ou aléatoire</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="submit-btn">
+          ⚠️ Envoyer le rapport
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  function closeBugReport() {
+    window.location.href = '/page-principal/html/accueil.html';
+  }
+
+  function submitBug(event) {
+    event.preventDefault();
+    
+    const formData = new FormData(event.target);
+    const bugData = {
+      title: formData.get('title') || '',
+      description: formData.get('description') || '',
+      page: formData.get('page') || '',
+      priority: formData.get('priority') || 'Moyen'
+    };
+
+    fetch('/api/report-bug', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(bugData)
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          alert('Merci! Votre rapport a été envoyé avec succès.');
+          closeBugReport();
+        } else {
+          alert('Erreur: ' + (data.message || 'Impossible d\'envoyer le rapport'));
+        }
+      })
+      .catch(err => {
+        console.error('Erreur:', err);
+        alert('Erreur lors de l\'envoi du rapport');
+      });
+  }
+</script>
+
+</body>
+</html>

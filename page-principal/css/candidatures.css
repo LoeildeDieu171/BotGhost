@@ -1,0 +1,217 @@
+/* ==================== ADMIN SECTION ==================== */
+.admin-section {
+  margin-top: 20px;
+  padding-top: 15px;
+}
+
+.admin-divider {
+  height: 1px;
+  background: #2a2a3e;
+  margin-bottom: 15px;
+}
+
+/* ==================== STATS ==================== */
+.stats-candidatures {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.stat-item {
+  background: #121222;
+  border: 1px solid #1a1a2e;
+  padding: 16px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.stat-item span {
+  display: block;
+  color: #888;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.stat-item strong {
+  display: block;
+  font-size: 28px;
+  color: #fff;
+}
+
+.stat-item.yellow {
+  border-color: #b68b00;
+}
+
+.stat-item.yellow strong {
+  color: #ffd700;
+}
+
+.stat-item.green {
+  border-color: #2ecc71;
+}
+
+.stat-item.green strong {
+  color: #2ecc71;
+}
+
+.stat-item.red {
+  border-color: #e74c3c;
+}
+
+.stat-item.red strong {
+  color: #e74c3c;
+}
+
+/* ==================== SEARCH ==================== */
+.search-bar {
+  margin-bottom: 20px;
+}
+
+.search-bar input {
+  width: 100%;
+  background: #121222;
+  border: 1px solid #1a1a2e;
+  padding: 12px 16px;
+  border-radius: 10px;
+  color: #eee;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.search-bar input:focus {
+  outline: none;
+  border-color: #7c5cff;
+  background: #131323;
+}
+
+/* ==================== CANDIDATURES LIST ==================== */
+.candidatures-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.empty-state {
+  background: #121222;
+  border: 1px solid #1a1a2e;
+  border-radius: 12px;
+  padding: 60px 20px;
+  text-align: center;
+  color: #888;
+}
+
+.empty-icon {
+  font-size: 48px;
+  margin-bottom: 15px;
+  opacity: 0.5;
+}
+
+.empty-state h3 {
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: #fff;
+}
+
+.empty-state p {
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.btn-discover {
+  background: linear-gradient(90deg, #7c5cff, #5f9cff);
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+
+.btn-discover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(124, 92, 255, 0.3);
+}
+
+/* ==================== CANDIDATURE CARD ==================== */
+.candidature-card {
+  background: #121222;
+  border: 1px solid #1a1a2e;
+  border-radius: 10px;
+  padding: 16px;
+  transition: all 0.2s;
+}
+
+.candidature-card:hover {
+  background: #131323;
+  border-color: #2a2a3e;
+}
+
+.cand-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.cand-header h3 {
+  font-size: 15px;
+  color: #fff;
+  margin: 0;
+}
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-badge.status-pending {
+  background: rgba(255, 192, 61, 0.2);
+  color: #ffc03d;
+}
+
+.status-badge.status-accepted {
+  background: rgba(46, 204, 113, 0.2);
+  color: #2ecc71;
+}
+
+.status-badge.status-refused {
+  background: rgba(231, 76, 60, 0.2);
+  color: #e74c3c;
+}
+
+.cand-info {
+  display: flex;
+  gap: 20px;
+  font-size: 13px;
+  color: #aaa;
+}
+
+.cand-info p {
+  margin: 0;
+}
+
+.cand-info strong {
+  color: #ddd;
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 1024px) {
+  .stats-candidatures {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .stats-candidatures {
+    grid-template-columns: 1fr;
+  }
+
+  .cand-info {
+    flex-direction: column;
+    gap: 8px;
+  }
+}

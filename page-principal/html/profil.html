@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Mon Profil • Dashboard</title>
+  <link rel="stylesheet" href="/page-principal/css/accueil.css">
+  <link rel="stylesheet" href="/page-principal/css/profil.css">
+  <script src="/page-principal/js/dashboard.js" defer></script>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div>
+      <div class="logo-section" onclick="navigateTo('accueil')" style="cursor: pointer;">
+        <img src="/logo.png" alt="Logo" class="sidebar-logo">
+      </div>
+
+      <nav class="menu">
+        <a class="item" onclick="navigateTo('accueil')">Accueil</a>
+        <a class="item active" onclick="navigateTo('profil')">Mon Profil</a>
+        <a class="item" onclick="navigateTo('candidatures')">Mes Candidatures</a>
+        <a class="item" onclick="navigateTo('recrutement')">Recrutement</a>
+      </nav>
+
+      <div id="adminSection" class="admin-section" style="display: none;">
+        <div class="admin-divider"></div>
+        <a class="item" onclick="navigateTo('admin')">Admin Panel</a>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <button class="bug-btn" onclick="location.href='/bug/bug.html'">
+        Signaler un bug
+      </button>
+
+      <button class="logout-btn" onclick="logout()">
+        Déconnexion
+      </button>
+
+      <div class="user" onclick="navigateTo('profil')" style="cursor: pointer;">
+        <img id="userAvatar" src="/logo.png" alt="avatar">
+        <div>
+          <strong id="userName">Utilisateur</strong><br>
+          <small>Membre</small>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <section class="content">
+
+      <!-- PROFILE HEADER -->
+      <div class="profile-header">
+        <div class="profile-banner">
+          <img id="profileAvatar" src="/logo.png" alt="Avatar" class="profile-avatar">
+        </div>
+
+        <div class="profile-info">
+          <h1 id="profileName">Utilisateur</h1>
+          <p id="profileRole">Membre</p>
+          <p id="profileId" class="profile-id"></p>
+        </div>
+      </div>
+
+      <!-- PROFILE CONTENT -->
+      <div class="profile-content">
+        
+        <!-- INFORMATIONS DU COMPTE -->
+        <div class="profile-section">
+          <h3>📋 Informations du compte</h3>
+          <div class="profile-grid">
+            <div class="profile-item">
+              <span class="label">Nom d'utilisateur</span>
+              <span id="accUsername" class="value">Utilisateur</span>
+            </div>
+            <div class="profile-item">
+              <span class="label">Discord ID</span>
+              <span id="accDiscordId" class="value">-</span>
+            </div>
+            <div class="profile-item">
+              <span class="label">Inscrit sur le site</span>
+              <span id="accJoinDate" class="value">-</span>
+            </div>
+            <div class="profile-item">
+              <span class="label">Rôle</span>
+              <span id="accRole" class="value">Membre</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- STATISTIQUES -->
+        <div class="profile-section">
+          <h3>📊 Statistiques</h3>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-number" id="statCandidatures">0</div>
+              <div class="stat-label">Candidatures</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number" id="statAccepted">0</div>
+              <div class="stat-label">Acceptées</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number" id="statPending">0</div>
+              <div class="stat-label">En attente</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+<script>
+  // Navigation
+  function navigateTo(page) {
+    const pages = {
+      'accueil': '/page-principal/html/accueil.html',
+      'profil': '/page-principal/html/profil.html',
+      'candidatures': '/page-principal/html/candidatures.html',
+      'recrutement': '/page-principal/html/recrutement.html',
+      'admin': '/page-principal/html/admin.html'
+    };
+    if (pages[page]) {
+      window.location.href = pages[page];
+    }
+  }
+
+  // Déconnexion
+  function logout() {
+    fetch('/logout', { method: 'POST' })
+      .then(() => {
+        window.location.href = '/';
+      })
+      .catch(err => {
+        console.error('Erreur déconnexion:', err);
+        window.location.href = '/';
+      });
+  }
+
+  // Charger les infos utilisateur
+  document.addEventListener('DOMContentLoaded', () => {
+    fetch('/api/user')
+      .then(res => res.json())
+      .then(data => {
+        if (data.user) {
+          const user = data.user;
+          
+          // Sidebar
+          document.getElementById('userName').textContent = user.username;
+          if (user.avatar) {
+            document.getElementById('userAvatar').src = user.avatar;
+          }
+          
+          // Profile Header
+          document.getElementById('profileName').textContent = user.username;
+          document.getElementById('profileRole').textContent = user.role || 'Membre';
+          if (user.id) {
+            document.getElementById('profileId').textContent = 'ID: ' + user.id;
+          }
+          if (data.user.avatar) {
+            document.getElementById('profileAvatar').src = data.user.avatar;
+          }
+          
+          // Profile Info
+          document.getElementById('accUsername').textContent = user.username;
+          document.getElementById('accDiscordId').textContent = user.discordId || '-';
+          document.getElementById('accRole').textContent = user.role || 'Membre';
+          
+          // Join Date
+          if (user.joinDate) {
+            const date = new Date(user.joinDate);
+            document.getElementById('accJoinDate').textContent = date.toLocaleDateString('fr-FR');
+          }
+          
+          // Stats
+          document.getElementById('statCandidatures').textContent = user.candidatureCount || '0';
+          document.getElementById('statAccepted').textContent = user.acceptedCount || '0';
+          document.getElementById('statPending').textContent = user.pendingCount || '0';
+
+          // Vérifier si admin
+          if (user.role === 'owner') {
+            document.getElementById('adminSection').style.display = 'block';
+          }
+        }
+      })
+      .catch(err => console.log('Erreur chargement profil:', err));
+  });
+</script>
+
+</body>
+</html>

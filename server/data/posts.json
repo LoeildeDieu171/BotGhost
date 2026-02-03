@@ -1,0 +1,23 @@
+[
+  {
+    "id": "alpha",
+    "name": "Alpha Testeur",
+    "icon": "⚡",
+    "places": 15,
+    "open": true
+  },
+  {
+    "id": "marketing",
+    "name": "Marketing",
+    "icon": "📣",
+    "places": 2,
+    "open": true
+  },
+  {
+    "id": "support",
+    "name": "Support",
+    "icon": "🛟",
+    "places": 5,
+    "open": true
+  }
+]

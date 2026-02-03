@@ -1,0 +1,114 @@
+/* ==================== ADMIN SECTION ==================== */
+.admin-section {
+  margin-top: 20px;
+  padding-top: 15px;
+}
+
+.admin-divider {
+  height: 1px;
+  background: #2a2a3e;
+  margin-bottom: 15px;
+}
+
+/* ==================== JOBS GRID ==================== */
+.jobs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+/* ==================== JOB CARD ==================== */
+.job-card {
+  background: #121222;
+  border: 1px solid #1a1a2e;
+  border-radius: 12px;
+  padding: 24px;
+  transition: all 0.3s;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.job-card:hover {
+  background: #1a1a2e;
+  border-color: #7c5cff;
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(124, 92, 255, 0.2);
+}
+
+.job-icon {
+  font-size: 32px;
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  background: rgba(124, 92, 255, 0.1);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.job-card h3 {
+  font-size: 18px;
+  color: #fff;
+  margin: 0;
+}
+
+.job-desc {
+  font-size: 13px;
+  color: #888;
+  margin: 0;
+}
+
+.job-spots {
+  font-size: 13px;
+  color: #aaa;
+  margin: 0;
+  font-weight: 500;
+}
+
+.btn-apply {
+  background: linear-gradient(90deg, #7c5cff, #5f9cff);
+  border: none;
+  color: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s;
+  margin-top: auto;
+}
+
+.btn-apply:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(124, 92, 255, 0.3);
+}
+
+.btn-apply:active {
+  transform: translateY(0);
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 1024px) {
+  .jobs-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .jobs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .job-card {
+    padding: 16px;
+  }
+
+  .job-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+  }
+}
